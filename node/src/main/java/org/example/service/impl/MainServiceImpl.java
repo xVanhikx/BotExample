@@ -11,6 +11,7 @@ import org.example.exceptions.UploadFileException;
 import org.example.service.FileService;
 import org.example.service.MainService;
 import org.example.service.ProducerService;
+import org.example.service.enums.LinkType;
 import org.example.service.enums.ServiceCommand;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -71,9 +72,9 @@ public class MainServiceImpl implements MainService {
         }
         try {
             AppDocument doc = fileService.processDoc(update.getMessage());
-
+            String link = fileService.generateLink(doc.getId(), LinkType.GET_DOC);
             var answer = "Документ успешно загружен! "
-            + "Ссылка для скачивания: http://test.ru/get-doc/777";
+            + "Ссылка для скачивания: " + link;
             sendAnswer(answer, chatId);
         } catch (UploadFileException ex) {
             log.error(ex);
@@ -93,7 +94,9 @@ public class MainServiceImpl implements MainService {
 
         try {
             AppPhoto photo = fileService.processPhoto(update.getMessage());
-            var answer = "Фото успешно загружено! Ссылка для скачивания: http://test.ru/get-photo/777";
+            String link = fileService.generateLink(photo.getId(), LinkType.GET_PHOTO);
+            var answer = "Фото успешно загружено! "
+                    + "Ссылка для скачивания: " + link;
             sendAnswer(answer, chatId);
         } catch (UploadFileException ex) {
             log.error(ex);
