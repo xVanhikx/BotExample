@@ -4,7 +4,12 @@ public enum ServiceCommand {
     HELP("/help"),
     REGISTRATION("/registration"),
     CANCEL("/cancel"),
-    START("/start");
+    START("/start"),
+    ADD("/add"),
+    DONE("/done"),
+    DELETE("/delete"),
+    TASKS("/tasks");
+
     private final String value;
 
     ServiceCommand(String value) {
